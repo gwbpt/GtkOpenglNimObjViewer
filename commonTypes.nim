@@ -67,7 +67,7 @@ proc addArrays(ins0, ins1:openArray[float]; outs0: var openArray[float]) =
 const NL* = "\p"
 const TAB* = '\t'
 
-const Obj3D_path* = "../../../"
+const Obj3D_path* = "" # "../../../"
 
 from fenv import maximumPositiveValue
 import glm

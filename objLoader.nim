@@ -1115,7 +1115,7 @@ proc loadModel*(self: ObjLoader; model: Model; ignoreTexture=false, debugTexture
     self.objPath       = model.objPath
     self.objPathFile   = Obj3D_path & model.objPathFile
     if not fileExists(self.objPathFile):
-        echo "ERROR '{self.objPathFile}' not found"
+        echo fmt"ERROR '{self.objPathFile}' not found"
         return false
 
     if debugTextureFile.len > 0:
