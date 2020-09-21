@@ -1,2 +1,5 @@
 # GtkOpenglNimObjViewer
-Opengl Obj viewer Gtk nim language
+## Gtk3 Opengl Obj viewer 
+## nim language
+### partial Wavefront obj format
+### tested only on linux  
