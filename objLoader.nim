@@ -649,6 +649,21 @@ proc `$`*(o:GroupMerged): string =
 
 #---------------------------------------------
 
+const jpgExt = ["png", "jpg", "jpeg"]
+
+proc textureFileExist(fileName: string): bool =
+    if fileExists(fileName):
+        result = true
+    else:
+        echo fileName & " not exists"
+        let nameExt = fileName.rsplit('.', 1)
+        var (name, ext) = (nameExt[0], nameExt[1])
+        let fileWithOtherExt = name & ".*"
+        if fileExists(fileWithOtherExt):
+            echo fileName & " not exists but " & fileWithOtherExt & " exists*"
+            result = true
+        else: echo fileWithOtherExt & " not exists !!!!!!"
+
 proc mergesGroups(self: ObjsManager; groups: seq[string]; debug=0): GroupMerged =
     echo "merging groups ..."
     assert len(groups) > 0
@@ -694,9 +709,11 @@ proc mergesGroups(self: ObjsManager; groups: seq[string]; debug=0): GroupMerged 
             if textureFile != "": # find if texture is already in list rgTxfil
                 let res = result.rgTxfil.txfis.find(textureFile)
                 if res == -1:
-                    if not fileExists(textureFile): echo textureFile & " not exists !!!!!!"
-                    result.rgTxfil.txfis.add(textureFile)
-                    grpRng.texIdx = result.rgTxfil.txfis.len.Idx
+                    if not textureFileExist(textureFile): #fileExists(textureFile):
+                        echo textureFile & " not exists !!!!!!"
+                    else:
+                        result.rgTxfil.txfis.add(textureFile)
+                        grpRng.texIdx = result.rgTxfil.txfis.len.Idx
                 else:
                     grpRng.texIdx = (1 + res).Idx
             else:
@@ -1119,11 +1136,13 @@ proc loadModel*(self: ObjLoader; model: Model; ignoreTexture=false, debugTexture
         return false
 
     if debugTextureFile.len > 0:
-        if fileExists(Obj3D_path & debugTextureFile):
-            self.debugTextureFile = Obj3D_path & debugTextureFile
+        let fullDebugTextureFilePath = Obj3D_path & debugTextureFile
+        if fileExists(fullDebugTextureFilePath):
+            self.debugTextureFile = fullDebugTextureFilePath
+            echo fmt"INFO: '{fullDebugTextureFilePath}' found"
         else:
             self.debugTextureFile = ""
-            echo fmt"WARN: '{Obj3D_path & debugTextureFile}' not found"
+            echo fmt"WARN: '{fullDebugTextureFilePath}' not found"
 
     self.o_eq_g      = true # treat 'o' as 'g'
     self.texPathFile = "" # Obj3D_path & model.texPathFile
@@ -1281,7 +1300,7 @@ when isMainModule:
     for param in params: sys_argv.add(param)
     #tlog(1, "sys_argv: " & $sys_argv) # emulation sys.argv
 
-    from objModels import models, printAllModels, debugTexturePathFile
+    from objModels import models, printAllModels
 
     proc printHelpAndQuit() =
         echo "Help:"
@@ -1294,10 +1313,11 @@ when isMainModule:
         printAllModels()
         quit()
 
+    let defaultDebugTextureFile = debugTexturePath & "whiteSquareWithColoredEdges.jpg"
     var noTexture        : bool
     var grpsToInclude    : seq[string]
     var grpsToExclude    : seq[string]
-    var debugTextureFile = debugTexturePathFile
+    var debugTextureFile = defaultDebugTextureFile
     var debug            = 1
     var ignoreTexture    = false
     var modelName        = "cylindre4" # default model
@@ -1314,7 +1334,7 @@ when isMainModule:
                 arg = sys_argv[i]
                 echo "arg{i}: '{arg}'"
                 if   arg == "-dbtx":
-                    debugTextureFile = debugTexturePathFile
+                    debugTextureFile = defaultDebugTextureFile
                 elif arg == "-notx": noTexture = true
                 elif arg.in(["-ig", "-eg"]):
                     var grps: seq[string]

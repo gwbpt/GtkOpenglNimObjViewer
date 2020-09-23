@@ -1,6 +1,6 @@
-# cylindre3.mtl
+# cylindre6.mtl
 
-newmtl Cylindre3
+newmtl Cylindre6
 	Ns 53.0000
 	Ni 1.5000
 	d 1.0000
@@ -11,6 +11,6 @@ newmtl Cylindre3
 	Kd 1.0000 1.0000 1.0000
 	Ks 0.1800 0.1800 0.1800
 	Ke 0.0000 0.0000 0.0000
-	map_Ka cylindre3.png
-	map_Kd cylindre3.png
+	map_Ka cylindre6.png
+	map_Kd cylindre6.png
 

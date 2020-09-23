@@ -176,7 +176,7 @@ proc load_image(fileName, mode="MIN_FILTER", debug=1): GLuint = # return texture
                 goodExt = ext
                 break
             else:
-                if debug >= 1: echo fmt"{file_jpg} not exist"
+                if debug >= 2: echo fmt"{file_jpg} not exist"
         if goodExt.len == 0:
             echo fmt"{name} not exists with extension {jpgExt}, !!!!!!!!!!!!!!"
         else:
@@ -1117,7 +1117,7 @@ when isMainModule:
     var debugTextureFile = ""
     var debug            = 1
     var ignoreTexture    = false
-    var modelName        = "Cylindre4" # default model
+    var modelName        = "Cylindre6" # default model
 
     if nargs >= 2:
         modelName = sys_argv[1]
@@ -1136,7 +1136,7 @@ when isMainModule:
             arg = sys_argv[i]
             echo "arg{i}: '{arg}'"
             if   arg == "-dbtx":
-                debugTextureFile = OBJM.debugTexturePathFile
+                debugTextureFile = debugTexturePath
             elif arg == "-notx": noTexture = true
             elif arg.in(["-ig", "-eg"]):
                 var grps: seq[string]

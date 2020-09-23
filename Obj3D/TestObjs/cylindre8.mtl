@@ -11,6 +11,6 @@ newmtl Cylindre8
 	Kd 1.0000 1.0000 1.0000
 	Ks 0.1800 0.1800 0.1800
 	Ke 0.0000 0.0000 0.0000
-	map_Ka textureCylindre8.png
-	map_Kd textureCylindre8.png
+	map_Ka cylindre8.png
+	map_Kd cylindre8.png
 
